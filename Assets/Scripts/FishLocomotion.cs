@@ -12,8 +12,10 @@ public class FishLocomotion : MonoBehaviour
     public float moveSpeed = 2.0f;
     [Tooltip("Speed at which the fish turns.")]
     public float turnSpeed = 1.0f;
-    [Tooltip("How close the fish needs to be to its target destination to consider it reached.")]
+    [Tooltip("How close the fish needs to be to its target destination (horizontally) to consider it reached.")]
     public float destinationThreshold = 0.5f;
+    [Tooltip("The fixed Y-level the fish should swim at (e.g., the water surface).")]
+    public float surfaceYLevel = 0.0f; // *** ADDED: Define the surface height ***
 
     [Header("Behavior Timing")]
     [Tooltip("Minimum time the fish will swim towards a destination.")]
@@ -26,10 +28,10 @@ public class FishLocomotion : MonoBehaviour
     public float maxPauseTime = 4.0f;
 
     [Header("Swimming Boundaries")]
-    [Tooltip("The center of the area where the fish can swim.")]
+    [Tooltip("The center of the area where the fish can swim (Y component ignored for movement, used for gizmo).")]
     public Vector3 boundaryCenter = Vector3.zero;
-    [Tooltip("The radius of the spherical area where the fish can swim.")]
-    public float boundaryRadius = 10.0f;
+    [Tooltip("The horizontal radius of the cylindrical area where the fish can swim.")]
+    public float boundaryRadius = 20.0f;
     [Tooltip("How strongly the fish turns back when hitting a boundary (higher value = sharper turn).")]
     public float boundaryAvoidanceStrength = 2.0f;
 
@@ -42,7 +44,7 @@ public class FishLocomotion : MonoBehaviour
     // --- State Enum ---
     private enum FishState
     {
-        Idle,      // Starting state or between actions
+        Idle,       // Starting state or between actions
         Swimming,
         Pausing
     }
@@ -54,16 +56,23 @@ public class FishLocomotion : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         // --- Rigidbody Configuration ---
-        // Ensure Rigidbody doesn't use gravity and has reasonable drag
         rb.useGravity = false;
-        rb.drag = 1.0f;          // Provides some resistance to movement
-        rb.angularDrag = 1.0f;   // Provides resistance to rotation
+        rb.drag = 1.0f;
+        rb.angularDrag = 1.0f;
 
-        // Optional: Freeze rotation on axes you don't want the fish to roll on
-        // rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        // *** MODIFIED: Freeze Y position and X/Z rotation for surface movement ***
+        rb.constraints = RigidbodyConstraints.FreezePositionY |
+                         RigidbodyConstraints.FreezeRotationX |
+                         RigidbodyConstraints.FreezeRotationZ;
 
-        // Make sure the fish starts within bounds
-        transform.position = GetRandomPointInBounds(boundaryCenter, boundaryRadius);
+        // Make sure the fish starts on the surface and within horizontal bounds
+        Vector3 startPos = GetRandomPointOnSurface(boundaryCenter, boundaryRadius);
+        // Ensure the initial Y position is correct *before* applying constraints fully take effect
+        startPos.y = surfaceYLevel;
+        transform.position = startPos;
+        // Force Rigidbody position after setting transform position if needed
+        rb.position = startPos;
+
 
         // Start the behavior loop
         StartBehavior();
@@ -73,6 +82,15 @@ public class FishLocomotion : MonoBehaviour
     {
         // FixedUpdate is best for Rigidbody physics operations
 
+        // Force the Y position every physics update to be absolutely sure.
+        // This might be redundant with constraints but adds extra safety.
+        Vector3 currentPos = rb.position;
+        if (!Mathf.Approximately(currentPos.y, surfaceYLevel)) // Avoids tiny floating point adjustments if already correct
+        {
+             rb.position = new Vector3(currentPos.x, surfaceYLevel, currentPos.z);
+        }
+
+
         if (currentState == FishState.Swimming)
         {
             MoveTowardsTarget();
@@ -81,7 +99,12 @@ public class FishLocomotion : MonoBehaviour
         else if (currentState == FishState.Pausing)
         {
             // Apply damping to stop movement smoothly
-            rb.velocity *= 0.9f; // Adjust multiplier for faster/slower stopping
+            // Only damp horizontal velocity since Y is frozen
+            Vector3 horizontalVelocity = rb.velocity;
+            horizontalVelocity.y = 0;
+            rb.velocity = horizontalVelocity * 0.9f; // Adjust multiplier for faster/slower stopping
+
+            // Angular velocity damping (primarily Y-axis rotation now)
             rb.angularVelocity *= 0.9f;
         }
     }
@@ -90,34 +113,32 @@ public class FishLocomotion : MonoBehaviour
 
     void StartBehavior()
     {
-        // Stop any previous behavior coroutine if running
         if (currentBehaviorCoroutine != null)
         {
             StopCoroutine(currentBehaviorCoroutine);
         }
-        // Start a new behavior cycle
         currentBehaviorCoroutine = StartCoroutine(BehaviorRoutine());
     }
 
     IEnumerator BehaviorRoutine()
     {
-        currentState = FishState.Idle; // Start in Idle to decide next action
+        currentState = FishState.Idle;
 
-        while (true) // Loop indefinitely
+        while (true)
         {
-            // Decide randomly whether to swim or pause next
-            bool shouldSwim = Random.Range(0, 3) > 0; // 2/3 chance to swim, 1/3 chance to pause
+            bool shouldSwim = Random.Range(0, 3) > 0;
 
             if (shouldSwim)
             {
                 // --- Swim Phase ---
                 currentState = FishState.Swimming;
-                targetPosition = GetRandomPointInBounds(boundaryCenter, boundaryRadius);
+                // *** MODIFIED: Get target on the surface plane ***
+                targetPosition = GetRandomPointOnSurface(boundaryCenter, boundaryRadius);
                 float swimDuration = Random.Range(minSwimTime, maxSwimTime);
                 float swimTimer = 0f;
 
-                // Swim until timer runs out OR destination is reached
-                while (swimTimer < swimDuration && Vector3.Distance(transform.position, targetPosition) > destinationThreshold)
+                // *** MODIFIED: Check horizontal distance ***
+                while (swimTimer < swimDuration && HorizontalDistance(transform.position, targetPosition) > destinationThreshold)
                 {
                     // Movement logic happens in FixedUpdate
                     swimTimer += Time.deltaTime;
@@ -129,13 +150,11 @@ public class FishLocomotion : MonoBehaviour
                 // --- Pause Phase ---
                 currentState = FishState.Pausing;
                 float pauseDuration = Random.Range(minPauseTime, maxPauseTime);
-
-                yield return new WaitForSeconds(pauseDuration); // Wait for the pause duration
+                yield return new WaitForSeconds(pauseDuration);
             }
 
-            // After swimming or pausing, transition back to Idle briefly to pick next action
             currentState = FishState.Idle;
-            yield return null; // Wait one frame before deciding next action
+            yield return null;
         }
     }
 
@@ -145,34 +164,36 @@ public class FishLocomotion : MonoBehaviour
     {
         if (targetPosition == null) return;
 
-        // Calculate direction to target
-        Vector3 directionToTarget = (targetPosition - transform.position).normalized;
+        // Target position should already be on the correct Y plane from GetRandomPointOnSurface
+        Vector3 targetPosOnPlane = new Vector3(targetPosition.x, surfaceYLevel, targetPosition.z);
+        Vector3 currentPosOnPlane = new Vector3(transform.position.x, surfaceYLevel, transform.position.z);
+
+
+        // Calculate direction to target *horizontally*
+        Vector3 directionToTarget = (targetPosOnPlane - currentPosOnPlane).normalized;
 
         if (directionToTarget != Vector3.zero) // Avoid zero vector issues
         {
-            // --- Rotation ---
-            // Calculate desired rotation to look at the target
-            Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+            // --- Rotation (Yaw only) ---
+            Quaternion targetRotation = Quaternion.LookRotation(directionToTarget); // Will correctly calculate yaw rotation
 
-            // Smoothly rotate towards the target rotation
+            // Smoothly rotate towards the target rotation (around Y axis due to constraints)
             Quaternion newRotation = Quaternion.Slerp(rb.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
             rb.MoveRotation(newRotation);
 
-            // --- Movement ---
+            // --- Movement (Horizontal only) ---
             // Move the fish forward in its current facing direction
+            // transform.forward will be horizontal due to rotation constraints
             Vector3 forwardMovement = transform.forward * moveSpeed;
-            rb.velocity = forwardMovement; // Directly set velocity for simple movement
-            // Alternative: Use AddForce for more physical feel
-            // rb.AddForce(transform.forward * moveSpeed, ForceMode.Acceleration);
+            // Ensure no accidental vertical velocity creeps in
+            forwardMovement.y = 0;
+            rb.velocity = forwardMovement;
         }
 
-        // Optional: Check if destination reached here as well (though coroutine handles timeout)
-        if (Vector3.Distance(transform.position, targetPosition) <= destinationThreshold)
+        // *** MODIFIED: Check horizontal distance for reaching destination ***
+        if (HorizontalDistance(transform.position, targetPosition) <= destinationThreshold)
         {
-            // Reached destination, start next behavior phase immediately
-            // We can trigger the coroutine to advance by stopping and starting it,
-            // or by adding a flag that the coroutine checks. Starting/Stopping is simpler here.
-            StartBehavior();
+            StartBehavior(); // Reached destination
         }
     }
 
@@ -180,55 +201,81 @@ public class FishLocomotion : MonoBehaviour
 
     void CheckBoundary()
     {
-        float distanceFromCenter = Vector3.Distance(transform.position, boundaryCenter);
+        // *** MODIFIED: Check horizontal distance from center ***
+        float horizontalDistanceFromCenter = HorizontalDistance(transform.position, boundaryCenter);
 
-        if (distanceFromCenter > boundaryRadius)
+        if (horizontalDistanceFromCenter > boundaryRadius)
         {
-            // Fish is outside bounds - force it to turn back towards the center
-            Vector3 directionToCenter = (boundaryCenter - transform.position).normalized;
+            // Fish is outside horizontal bounds - force it to turn back towards the center plane
+            Vector3 centerOnPlane = new Vector3(boundaryCenter.x, surfaceYLevel, boundaryCenter.z);
+            Vector3 currentPosOnPlane = new Vector3(transform.position.x, surfaceYLevel, transform.position.z);
+
+            // *** MODIFIED: Calculate direction towards center horizontally ***
+            Vector3 directionToCenter = (centerOnPlane - currentPosOnPlane).normalized;
+
 
             // Make the target position slightly inside the boundary towards the center
-            targetPosition = boundaryCenter + directionToCenter * (boundaryRadius * 0.9f); // Target 90% radius towards center
+            // Ensure the target Y is correct
+             targetPosition = centerOnPlane + directionToCenter * (boundaryRadius * 0.9f); // Target 90% radius towards center
+
 
             // Optionally increase turn speed temporarily for boundary avoidance
             float effectiveTurnSpeed = turnSpeed * boundaryAvoidanceStrength;
 
             // Rotate towards the new target (center-ish)
-             if (directionToCenter != Vector3.zero)
-             {
+            if (directionToCenter != Vector3.zero)
+            {
                 Quaternion targetRotation = Quaternion.LookRotation(directionToCenter);
                 Quaternion newRotation = Quaternion.Slerp(rb.rotation, targetRotation, effectiveTurnSpeed * Time.fixedDeltaTime);
                 rb.MoveRotation(newRotation);
-             }
+            }
 
-            // Ensure the fish is still trying to swim
-             currentState = FishState.Swimming;
+            // Ensure the fish is still trying to swim towards the new valid target
+            currentState = FishState.Swimming;
 
-            // We don't need to restart the whole behavior, just override the target
-            // and let the normal swimming logic take over.
+             // We override the target; the normal swimming logic in FixedUpdate will handle movement.
         }
     }
 
-    Vector3 GetRandomPointInBounds(Vector3 center, float radius)
+    // *** ADDED: Helper function for horizontal distance ***
+    float HorizontalDistance(Vector3 a, Vector3 b)
     {
-        // Get a random point within a sphere
-        return center + Random.insideUnitSphere * radius;
+        return Vector2.Distance(new Vector2(a.x, a.z), new Vector2(b.x, b.z));
+    }
+
+
+    // *** MODIFIED: Get random point on the horizontal plane at surface level ***
+    Vector3 GetRandomPointOnSurface(Vector3 center, float radius)
+    {
+        // Get a random point within a 2D circle
+        Vector2 randomPoint = Random.insideUnitCircle * radius;
+        // Create the 3D position on the defined surface plane
+        return new Vector3(center.x + randomPoint.x, surfaceYLevel, center.z + randomPoint.y); // Use randomPoint.y for Z
     }
 
     // --- Gizmos for Visualization (Optional) ---
     void OnDrawGizmosSelected()
     {
-        // Draw the boundary sphere in the Scene view
+        // *** MODIFIED: Draw the boundary as a wire *disk* (or cylinder top) at the surface level ***
+        // Use Handles for a cleaner disk, requires UnityEditor but fine for editor visualization
+#if UNITY_EDITOR
+        UnityEditor.Handles.color = Color.yellow;
+        // Position the disk at the surface level, oriented horizontally
+        UnityEditor.Handles.DrawWireDisc(new Vector3(boundaryCenter.x, surfaceYLevel, boundaryCenter.z), Vector3.up, boundaryRadius);
+#else
+        // Fallback: Draw a sphere, just remember it represents a cylinder boundary in practice
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(boundaryCenter, boundaryRadius);
+        Gizmos.DrawWireSphere(new Vector3(boundaryCenter.x, surfaceYLevel, boundaryCenter.z), boundaryRadius);
+#endif
 
         // Draw the current target position
         if (currentState == FishState.Swimming)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(targetPosition, 0.3f);
-            Gizmos.DrawLine(transform.position, targetPosition);
+            // Ensure target gizmo is drawn at surface level
+            Gizmos.DrawSphere(new Vector3(targetPosition.x, surfaceYLevel, targetPosition.z), 0.3f);
+            Gizmos.DrawLine(new Vector3(transform.position.x, surfaceYLevel, transform.position.z),
+                            new Vector3(targetPosition.x, surfaceYLevel, targetPosition.z));
         }
     }
 }
-
