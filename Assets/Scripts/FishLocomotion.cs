@@ -9,31 +9,31 @@ public class FishLocomotion : MonoBehaviour
 
     [Header("Movement Settings")]
     [Tooltip("Speed at which the fish swims forward.")]
-    public float moveSpeed = 2.0f;
+    public float moveSpeed = 5.0f;
     [Tooltip("Speed at which the fish turns.")]
-    public float turnSpeed = 1.0f;
+    public float turnSpeed = 0.5f;
     [Tooltip("How close the fish needs to be to its target destination (horizontally) to consider it reached.")]
     public float destinationThreshold = 0.5f;
     [Tooltip("The fixed Y-level the fish should swim at (e.g., the water surface).")]
-    public float surfaceYLevel = 0.0f; // *** ADDED: Define the surface height ***
+    public float surfaceYLevel = 1.0f; // *** ADDED: Define the surface height ***
 
     [Header("Behavior Timing")]
     [Tooltip("Minimum time the fish will swim towards a destination.")]
     public float minSwimTime = 3.0f;
     [Tooltip("Maximum time the fish will swim towards a destination.")]
-    public float maxSwimTime = 8.0f;
+    public float maxSwimTime = 10.0f;
     [Tooltip("Minimum time the fish will pause.")]
     public float minPauseTime = 1.0f;
     [Tooltip("Maximum time the fish will pause.")]
-    public float maxPauseTime = 4.0f;
+    public float maxPauseTime = 2.0f;
 
     [Header("Swimming Boundaries")]
     [Tooltip("The center of the area where the fish can swim (Y component ignored for movement, used for gizmo).")]
-    public Vector3 boundaryCenter = Vector3.zero;
+    public Vector3 boundaryCenter = new Vector3(1704.69995f, 1.0f, 1108.40002f);
     [Tooltip("The horizontal radius of the cylindrical area where the fish can swim.")]
-    public float boundaryRadius = 20.0f;
+    public float boundaryRadius = 100.0f;
     [Tooltip("How strongly the fish turns back when hitting a boundary (higher value = sharper turn).")]
-    public float boundaryAvoidanceStrength = 2.0f;
+    public float boundaryAvoidanceStrength = 5.0f;
 
     // --- Private Variables ---
     private Rigidbody rb;
@@ -57,8 +57,8 @@ public class FishLocomotion : MonoBehaviour
 
         // --- Rigidbody Configuration ---
         rb.useGravity = false;
-        rb.drag = 1.0f;
-        rb.angularDrag = 1.0f;
+        rb.drag = 0.5f;
+        rb.angularDrag = 0.8f;
 
         // *** MODIFIED: Freeze Y position and X/Z rotation for surface movement ***
         rb.constraints = RigidbodyConstraints.FreezePositionY |
