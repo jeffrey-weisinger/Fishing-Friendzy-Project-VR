@@ -26,7 +26,7 @@ public class FishLocomotion : MonoBehaviour
 
     [Header("Swimming Boundaries")]
     public Vector3 boundaryCenter = new Vector3(1704.69995f, -5.0f, 1108.40002f);
-    public float boundaryRadius = 500.0f;
+    public float boundaryRadius = 200.0f;
     public float waterSurfaceYLevel = 1.0f;
     public float waterBottomYLevel = -40.0f;
 
