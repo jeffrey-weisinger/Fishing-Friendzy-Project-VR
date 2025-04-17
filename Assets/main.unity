@@ -1306,6 +1306,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &804940559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5843497292548984443, guid: c116b7497ab8ca34c9188965d4295e27,
+    type: 3}
+  m_PrefabInstance: {fileID: 1515452973}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &804940562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804940559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: 461bce25-7762-40c5-b639-f190649be6d6
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &941953325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1458,6 +1495,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9eb0da4ddc2057458a1e6f3ef6c78db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveTrigger:
+    m_UseReference: 1
+    m_Action:
+      m_Name: Move Trigger
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 92ea4fc7-a315-45bf-b27f-ae631740c043
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 7904272356298805229, guid: c348712bda248c246b8c49b3db54643f,
+      type: 3}
 --- !u!1 &1011136316
 GameObject:
   m_ObjectHideFlags: 0
@@ -2275,6 +2325,10 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5843497292548984443, guid: c116b7497ab8ca34c9188965d4295e27,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 804940562}
     - targetCorrespondingSourceObject: {fileID: 5113664386210071967, guid: c116b7497ab8ca34c9188965d4295e27,
         type: 3}
       insertIndex: -1
