@@ -33,7 +33,7 @@ public class MoveRotate : MonoBehaviour
             Vector3 forward = transform.forward;
             forward.y = 0f;
             forward.Normalize();
-            transform.position +=  Time.deltaTime * forward * 500;
+            transform.position +=  Time.deltaTime * forward * 200;
         }
         // transform.LookAt(newPosition);
     }
