@@ -992,8 +992,8 @@ MonoBehaviour:
   maxSwimTime: 10
   minPauseTime: 1
   maxPauseTime: 2
-  boundaryCenter: {x: 1704.7, y: -5, z: 1108.4}
-  boundaryRadius: 200
+  boundaryCenter: {x: 1780, y: -5, z: 767.5}
+  boundaryRadius: 330
   waterSurfaceYLevel: 1
   waterBottomYLevel: -40
   verticalAvoidanceBuffer: 1
@@ -1157,8 +1157,8 @@ MonoBehaviour:
   maxSwimTime: 10
   minPauseTime: 1
   maxPauseTime: 2
-  boundaryCenter: {x: 1704.7, y: -5, z: 1108.4}
-  boundaryRadius: 200
+  boundaryCenter: {x: 1780, y: -5, z: 767.5}
+  boundaryRadius: 330
   waterSurfaceYLevel: 1
   waterBottomYLevel: -40
   verticalAvoidanceBuffer: 1
@@ -1683,8 +1683,8 @@ MonoBehaviour:
   maxSwimTime: 10
   minPauseTime: 1
   maxPauseTime: 2
-  boundaryCenter: {x: 1704.7, y: -5, z: 1108.4}
-  boundaryRadius: 200
+  boundaryCenter: {x: 1780, y: -5, z: 767.5}
+  boundaryRadius: 330
   waterSurfaceYLevel: 1
   waterBottomYLevel: -40
   verticalAvoidanceBuffer: 1
@@ -3098,8 +3098,8 @@ MonoBehaviour:
   maxSwimTime: 10
   minPauseTime: 1
   maxPauseTime: 2
-  boundaryCenter: {x: 1704.7, y: -5, z: 1108.4}
-  boundaryRadius: 200
+  boundaryCenter: {x: 1780, y: -5, z: 767.5}
+  boundaryRadius: 330
   waterSurfaceYLevel: 1
   waterBottomYLevel: -40
   verticalAvoidanceBuffer: 1
@@ -3295,8 +3295,8 @@ MonoBehaviour:
   maxSwimTime: 10
   minPauseTime: 1
   maxPauseTime: 2
-  boundaryCenter: {x: 1704.7, y: -5, z: 1108.4}
-  boundaryRadius: 200
+  boundaryCenter: {x: 1780, y: -5, z: 767.5}
+  boundaryRadius: 330
   waterSurfaceYLevel: 1
   waterBottomYLevel: -40
   verticalAvoidanceBuffer: 1
