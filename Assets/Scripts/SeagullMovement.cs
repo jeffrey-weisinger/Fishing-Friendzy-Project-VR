@@ -7,7 +7,7 @@ public class SeagullMovement : MonoBehaviour
     [SerializeField] private float speed = 25.0f;
 
     [Tooltip("How far the seagull flies before dissapearing")]
-    [SerializeField] private float disappearDistance = 500.0f;
+    [SerializeField] private float disappearDistance = 600.0f;
 
     [Header("Reset Behavior")]
     [Tooltip("Slight variation added to the reset position")]
