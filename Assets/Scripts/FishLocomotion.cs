@@ -25,8 +25,8 @@ public class FishLocomotion : MonoBehaviour
     public float maxPauseTime = 2.0f;
 
     [Header("Swimming Boundaries")]
-    public Vector3 boundaryCenter = new Vector3(1704.69995f, -5.0f, 1108.40002f);
-    public float boundaryRadius = 200.0f;
+    public Vector3 boundaryCenter = new Vector3(1780f, -5.0f, 767.5f);
+    public float boundaryRadius = 330.0f;
     public float waterSurfaceYLevel = 1.0f;
     public float waterBottomYLevel = -40.0f;
 
