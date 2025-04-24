@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 19183653}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1301, y: 0, z: 307}
   m_LocalScale: {x: 10000, y: 1, z: 10000}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -789,7 +789,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 518503966}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Grab_Rod_Spot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 524128295}
   - component: {fileID: 524128294}
   - component: {fileID: 524128293}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1003,7 +1003,7 @@ GameObject:
   - component: {fileID: 775625378}
   - component: {fileID: 775625377}
   - component: {fileID: 775625376}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1281,7 +1281,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 868299634}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CastPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1312,7 +1312,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 879424468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RodTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1918,7 +1918,7 @@ GameObject:
   - component: {fileID: 1425737683}
   - component: {fileID: 1425737682}
   - component: {fileID: 1425737681}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2353,7 +2353,7 @@ GameObject:
   - component: {fileID: 1562770347}
   - component: {fileID: 1562770346}
   - component: {fileID: 1562770345}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2860,6 +2860,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -8700617353114198275, guid: 7569593943e73c1469a2fae3ae12da87,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7569593943e73c1469a2fae3ae12da87,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2955,10 +2960,20 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -1.83
       objectReference: {fileID: 0}
+    - target: {fileID: -208595431880416365, guid: 7569593943e73c1469a2fae3ae12da87,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7569593943e73c1469a2fae3ae12da87,
         type: 3}
       propertyPath: m_Name
       value: boat
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7569593943e73c1469a2fae3ae12da87,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -2977,6 +2992,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1707042993}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7569593943e73c1469a2fae3ae12da87,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1707042994}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7569593943e73c1469a2fae3ae12da87,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1707042995}
   m_SourcePrefab: {fileID: 100100000, guid: 7569593943e73c1469a2fae3ae12da87, type: 3}
 --- !u!4 &1707042990 stripped
 Transform:
@@ -3004,7 +3027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraInfo: {fileID: 1515452974}
   rotationSpeed: 50
-  moveSpeed: 50
+  moveSpeed: 500
   positionOffset: {x: 0, y: -3, z: 0}
 --- !u!114 &1707042993
 MonoBehaviour:
@@ -3069,6 +3092,54 @@ MonoBehaviour:
   m_DefaultActionMap: Boat Control
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!65 &1707042994
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707042991}
+  m_Material: {fileID: 13400000, guid: 54a96c0fc8ee9e44fb554f7ea73f5365, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1707042995
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1707042991}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 1
 --- !u!1001 &1741174609
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3513,7 +3584,7 @@ GameObject:
   - component: {fileID: 1904820145}
   - component: {fileID: 1904820144}
   - component: {fileID: 1904820143}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3604,7 +3675,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1943875931}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rod_holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3619,14 +3690,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1943875930}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1658.9811, y: 4.7349997, z: 1239.3965}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 1, y: 3, z: 1.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1958222597}
   m_Father: {fileID: 1707042990}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1001 &1958222592
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3705,6 +3776,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fishing_Rod
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7454e17b283ddd442a3b5bdd48b7f86f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -3766,8 +3842,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -4294,6 +4370,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FollowBobber
+      objectReference: {fileID: 0}
+    - target: {fileID: 7874958586603808974, guid: 3e91a6d26b3a8654eaef1495a56b878e,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8639345097813397805, guid: 3e91a6d26b3a8654eaef1495a56b878e, type: 3}

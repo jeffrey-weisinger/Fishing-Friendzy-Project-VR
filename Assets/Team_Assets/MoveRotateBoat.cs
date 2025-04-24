@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
+
+
 public class MoveRotateBoat : MonoBehaviour
 {
     public Transform cameraInfo; // XR Camera
@@ -12,9 +14,13 @@ public class MoveRotateBoat : MonoBehaviour
     public Vector3 positionOffset = new Vector3(0f, -3f, 0f); // Boat follows camera with vertical offset
 
 
+
+
     private Vector2 joystickInput;
     private float throttleInput = 0f;
     private InputAction throttleAction;
+
+
 
 
     void OnEnable()
@@ -26,11 +32,15 @@ public class MoveRotateBoat : MonoBehaviour
     }
 
 
+
+
     void OnDisable()
     {
         if (throttleAction != null)
             throttleAction.performed -= OnThrottle;
     }
+
+
 
 
     void LateUpdate()
@@ -54,6 +64,8 @@ public class MoveRotateBoat : MonoBehaviour
         }
 
 
+
+
         // 2. Rotate boat with joystick (camera stays independent)
         if (joystickInput != Vector2.zero)
         {
@@ -62,10 +74,14 @@ public class MoveRotateBoat : MonoBehaviour
         }
 
 
+
+
         // 3. Boat follows camera position with vertical offset
         Vector3 targetBoatPosition = cameraInfo.position + positionOffset;
         transform.position = targetBoatPosition;
     }
+
+
 
 
     public void OnMove(InputAction.CallbackContext context)
@@ -74,9 +90,14 @@ public class MoveRotateBoat : MonoBehaviour
     }
 
 
+
+
     public void OnThrottle(InputAction.CallbackContext context)
     {
         throttleInput = context.ReadValue<float>();
         Debug.Log("Throttle: " + throttleInput);
     }
 }
+
+
+
