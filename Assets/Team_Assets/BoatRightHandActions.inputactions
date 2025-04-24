@@ -1,0 +1,34 @@
+{
+    "name": "BoatRightHandActions",
+    "maps": [
+        {
+            "name": "RightHand",
+            "id": "ddaed235-ad2b-420f-8cc3-b1808e6e3d84",
+            "actions": [
+                {
+                    "name": "Grab",
+                    "type": "Button",
+                    "id": "cf33f599-46d8-4a4b-896c-67328e340848",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f8c246c3-4003-46c9-ab61-1537f977c6f9",
+                    "path": "<OculusTouchController>{RightHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

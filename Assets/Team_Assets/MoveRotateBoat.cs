@@ -11,7 +11,7 @@ public class MoveRotateBoat : MonoBehaviour
     public Transform cameraInfo; // XR Camera
     public float rotationSpeed = 50f;
     public float moveSpeed = 2f;
-    public Vector3 positionOffset = new Vector3(0f, -3f, 0f); // Boat follows camera with vertical offset
+    public Vector3 positionOffset = new Vector3(2f, -3f,  0f); // Boat follows camera with vertical offset
 
 
 
