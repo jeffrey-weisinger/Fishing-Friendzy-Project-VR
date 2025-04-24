@@ -80,4 +80,3 @@ public class MoveRotateBoat : MonoBehaviour
         Debug.Log("Throttle: " + throttleInput);
     }
 }
-
