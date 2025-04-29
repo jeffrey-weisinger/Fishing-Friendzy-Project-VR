@@ -43,44 +43,67 @@ public class MoveRotateBoat : MonoBehaviour
 
 
 
+    // void LateUpdate()
+    // {
+    //     if (cameraInfo == null) return;
+       
+    //     // 1. Move camera forward with trigger
+    //     if (throttleInput > 0.1f)
+    //     {
+    //         Debug.Log("HERE??");
+    //         // Get horizontal movement direction (ignore vertical)
+    //         Vector3 boatForward = transform.forward;
+           
+    //         // Move the camera forward
+    //         Debug.Log("1");
+    //         Debug.Log(cameraInfo.position);
+    //         cameraInfo.position += boatForward * moveSpeed * throttleInput * Time.deltaTime;
+    //         Debug.Log("2");
+    //         Debug.Log(cameraInfo.position);
+ 
+    //     }
+
+
+
+
+    //     // 2. Rotate boat with joystick (camera stays independent)
+    //     if (joystickInput != Vector2.zero)
+    //     {
+    //         float yaw = joystickInput.x * rotationSpeed * Time.deltaTime;
+    //         transform.Rotate(0, yaw, 0, Space.World);
+    //     }
+
+
+
+
+    //     // 3. Boat follows camera position with vertical offset
+    //     Vector3 targetBoatPosition = cameraInfo.position + positionOffset;
+    //     transform.position = targetBoatPosition;
+    // }
+
     void LateUpdate()
     {
         if (cameraInfo == null) return;
-       
+
         // 1. Move camera forward with trigger
         if (throttleInput > 0.1f)
         {
-            Debug.Log("HERE??");
-            // Get horizontal movement direction (ignore vertical)
             Vector3 boatForward = transform.forward;
-           
-            // Move the camera forward
-            Debug.Log("1");
-            Debug.Log(cameraInfo.position);
             cameraInfo.position += boatForward * moveSpeed * throttleInput * Time.deltaTime;
-            Debug.Log("2");
-            Debug.Log(cameraInfo.position);
- 
         }
 
-
-
-
-        // 2. Rotate boat with joystick (camera stays independent)
+        // 2. Rotate boat & camera with joystick
         if (joystickInput != Vector2.zero)
         {
             float yaw = joystickInput.x * rotationSpeed * Time.deltaTime;
             transform.Rotate(0, yaw, 0, Space.World);
+            cameraInfo.Rotate(0, yaw, 0, Space.World);
         }
-
-
-
 
         // 3. Boat follows camera position with vertical offset
         Vector3 targetBoatPosition = cameraInfo.position + positionOffset;
         transform.position = targetBoatPosition;
     }
-
 
 
 
