@@ -1,116 +1,3 @@
-
-// // using UnityEngine;
-// // using System.Collections;
-
-// // public class FishingManager : MonoBehaviour
-// // {
-// //     [Header("Bobber Setup")]
-// //     public Transform castPoint;
-// //     public GameObject bobberPrefab;
-// //     public GameObject followBobber;
-
-// //     private GameObject currentBobber;
-// //     private bool isFishing = false;
-// //     private Coroutine resetCoroutine; // Track active coroutine
-
-// //     public void Cast()
-// //     {
-// //         if (isFishing) return;
-// //         isFishing = true;
-
-// //         if (followBobber != null)
-// //             followBobber.SetActive(false);
-
-// //         currentBobber = Instantiate(bobberPrefab, castPoint.position, Quaternion.identity);
-// //         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
-// //         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
-
-// //         Debug.Log("Bobber has been cast!");
-// //         resetCoroutine = StartCoroutine(ResetFishingAfterDelay());
-// //     }
-
-// //     private IEnumerator ResetFishingAfterDelay()
-// //     {
-// //         float delay = Random.Range(5f, 10f);
-// //         yield return new WaitForSeconds(delay);
-// //         ResetFishing();
-// //     }
- 
-// //     public void ResetFishing()
-// //     {
-// //         // Cancel pending reset if called manually
-// //         if (resetCoroutine != null)
-// //         {
-// //             StopCoroutine(resetCoroutine);
-// //             resetCoroutine = null;
-// //         }
-
-// //         isFishing = false;
-// //         if (currentBobber != null) Destroy(currentBobber);
-// //         if (followBobber != null) followBobber.SetActive(true);
-// //     }
-// // }
-
-// using UnityEngine;
-// using System.Collections;
-
-// public class FishingManager : MonoBehaviour
-// {
-//     [Header("Bobber Setup")]
-//     public Transform castPoint;
-//     public GameObject bobberPrefab;
-//     public GameObject followBobber;
-//     public GameObject fish1; // Reference to fish1 GameObject
-
-//     private GameObject currentBobber;
-//     private bool isFishing = false;
-//     private Coroutine resetCoroutine; // Track active coroutine
-
-//     public void Cast()
-//     {
-//         if (isFishing) return;
-//         isFishing = true;
-
-//         if (followBobber != null)
-//             followBobber.SetActive(false);
-            
-//         // Hide fish1 when casting
-//         if (fish1 != null)
-//             fish1.SetActive(false);
-
-//         currentBobber = Instantiate(bobberPrefab, castPoint.position, Quaternion.identity);
-//         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
-//         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
-
-//         Debug.Log("Bobber has been cast!");
-//         resetCoroutine = StartCoroutine(ResetFishingAfterDelay());
-//     }
-
-//     private IEnumerator ResetFishingAfterDelay()
-//     {
-//         float delay = Random.Range(5f, 10f);
-//         yield return new WaitForSeconds(delay);
-//         ResetFishing();
-//     }
- 
-//     public void ResetFishing()
-//     {
-//         // Cancel pending reset if called manually
-//         if (resetCoroutine != null)
-//         {
-//             StopCoroutine(resetCoroutine);
-//             resetCoroutine = null;
-//         }
-
-//         isFishing = false;
-//         if (currentBobber != null) Destroy(currentBobber);
-//         if (followBobber != null) followBobber.SetActive(true);
-        
-//         // Make fish1 visible when fishing is reset
-//         if (fish1 != null)
-//             fish1.SetActive(true);
-//     }
-// }
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI; // For UI components
@@ -206,3 +93,78 @@ public class FishingManager : MonoBehaviour
         }
     }
 }
+
+
+
+// using UnityEngine;
+// using System.Collections;
+
+// public class FishingManager : MonoBehaviour
+// {
+//     [Header("Bobber Setup")]
+//     public Transform castPoint;
+//     public GameObject bobberPrefab;
+//     public GameObject followBobber;
+    
+//     [Header("Fish Setup")]
+//     public GameObject fish1;
+
+//     private GameObject currentBobber;
+//     private bool isFishing = false;
+//     private Coroutine resetCoroutine;
+
+//     void Start()
+//     {
+//         // Make fish invisible at start
+//         if (fish1 != null)
+//             fish1.SetActive(false);
+//     }
+
+//     public void Cast()
+//     {
+//         if (isFishing) return;
+//         isFishing = true;
+
+//         if (followBobber != null)
+//             followBobber.SetActive(false);
+
+//         currentBobber = Instantiate(bobberPrefab, castPoint.position, Quaternion.identity);
+//         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
+//         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
+
+//         Debug.Log("Bobber has been cast!");
+//         resetCoroutine = StartCoroutine(ResetFishingAfterDelay());
+//     }
+
+//     private IEnumerator ResetFishingAfterDelay()
+//     {
+//         float delay = Random.Range(5f, 10f);
+//         Debug.Log($"Fish will appear in {delay} seconds");
+//         yield return new WaitForSeconds(delay);
+        
+//         // Call ResetFishing with parameter indicating it was called from Cast
+//         ResetFishing(true);
+//     }
+ 
+//     // Modified to accept parameter indicating if called from Cast
+//     public void ResetFishing(bool calledFromCast = false)
+//     {
+//         // Cancel pending reset if called manually
+//         if (resetCoroutine != null)
+//         {
+//             StopCoroutine(resetCoroutine);
+//             resetCoroutine = null;
+//         }
+
+//         isFishing = false;
+//         if (currentBobber != null) Destroy(currentBobber);
+//         if (followBobber != null) followBobber.SetActive(true);
+        
+//         // Only make fish visible if called from Cast via coroutine
+//         if (calledFromCast && fish1 != null)
+//         {
+//             fish1.SetActive(true);
+//             Debug.Log("Fish made visible - reset triggered by Cast");
+//         }
+//     }
+// }
