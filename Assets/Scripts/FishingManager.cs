@@ -2,99 +2,91 @@
 
 // public class FishingManager : MonoBehaviour
 // {
-//     public Transform castPoint;        // Bobber spawn position
-//     public GameObject bobberPrefab;    // Prefab of the bobber to be cast
-//     public GameObject followBobber;    // Idle bobber attached to rod tip
+//     [Header("Bobber Setup")]
+//     public Transform castPoint;
+//     public GameObject bobberPrefab;
+//     public GameObject followBobber;
 
-//     private GameObject currentBobber;  // Currently active bobber
+//     private GameObject currentBobber;
 //     private bool isFishing = false;
 
-//     void Update()
+//     // This gets wired up by the PlayerInput → Unity Event
+//     public void Cast()
 //     {
-//         if (Input.GetMouseButtonDown(0) && !isFishing)
-//         {
-//             CastBobber();
-//         }
-//     }
-
-//     void CastBobber()
-//     {
+//         if (isFishing) return;
 //         isFishing = true;
 
-//         // Hide the bobber attached to the rod tip
 //         if (followBobber != null)
 //             followBobber.SetActive(false);
 
-//         // Instantiate and launch the new bobber
 //         currentBobber = Instantiate(bobberPrefab, castPoint.position, Quaternion.identity);
-//         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
+//         var rb = currentBobber.GetComponent<Rigidbody>();
 //         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
 
 //         Debug.Log("Bobber has been cast!");
 //     }
 
-//     // Can be called externally (e.g., via button press or after some time)
 //     public void ResetFishing()
 //     {
 //         isFishing = false;
-
-//         if (currentBobber != null)
-//             Destroy(currentBobber);
-
-//         if (followBobber != null)
-//             followBobber.SetActive(true);
+//         if (currentBobber != null) Destroy(currentBobber);
+//         if (followBobber  != null) followBobber.SetActive(true);
 //     }
 // }
-
+ 
 using UnityEngine;
-using UnityEngine.InputSystem; // New Input System
 
 public class FishingManager : MonoBehaviour
 {
-    public Transform castPoint;
-    public GameObject bobberPrefab;
-    public GameObject followBobber;
+    [Header("Bobber Setup")]
+    public Transform castPoint;       
+    public GameObject bobberPrefab;   
+    public GameObject followBobber;   
 
-    private GameObject currentBobber;
+    private GameObject currentBobber; 
     private bool isFishing = false;
 
-    private Mouse mouse;
-
-    void OnEnable()
+    // → Bind this to your PlayerInput “Cast” event
+    public void Cast()
     {
-        mouse = Mouse.current;
-    }
-
-    void Update()
-    {
-        if (mouse != null && mouse.leftButton.wasPressedThisFrame && !isFishing)
-        {
-            CastBobber();
-        }
-    }
-
-    void CastBobber()
-    {
+        if (isFishing) return;
         isFishing = true;
 
         if (followBobber != null)
             followBobber.SetActive(false);
 
-        currentBobber = Instantiate(bobberPrefab, castPoint.position, Quaternion.identity);
-        Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
-        rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
+        currentBobber = Instantiate(
+            bobberPrefab,
+            castPoint.position,
+            Quaternion.identity
+        );
+        currentBobber.GetComponent<Rigidbody>()
+            .AddForce(castPoint.forward * 6f + Vector3.up * 2f,
+                      ForceMode.Impulse);
 
         Debug.Log("Bobber has been cast!");
+
+        // automatically retrieve after 5 seconds
+        Invoke(nameof(ResetFishing), 5f);
     }
 
+    // → Bind this to your PlayerInput “Retrieve” event (or call manually)
     public void ResetFishing()
     {
+        if (!isFishing) return;
         isFishing = false;
+
+        // cancel the pending auto-invoke if it’s still pending
+        CancelInvoke(nameof(ResetFishing));
 
         if (currentBobber != null)
             Destroy(currentBobber);
 
         if (followBobber != null)
             followBobber.SetActive(true);
+
+        Debug.Log("Bobber has been retrieved!");
     }
 }
+
+ 

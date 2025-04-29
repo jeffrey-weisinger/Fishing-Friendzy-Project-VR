@@ -4487,6 +4487,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: cc845c2b-c88a-4e4e-9616-afc4d0466328
     m_ActionName: Boat Control/Move Forward
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 09227031-9740-45b3-af6f-80c4430fdb7f
+    m_ActionName: Boat Control/Cast
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Boat Control
@@ -5353,6 +5357,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1958222603}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7454e17b283ddd442a3b5bdd48b7f86f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1958222606}
   m_SourcePrefab: {fileID: 100100000, guid: 7454e17b283ddd442a3b5bdd48b7f86f, type: 3}
 --- !u!1 &1958222593 stripped
 GameObject:
@@ -5568,6 +5576,77 @@ MonoBehaviour:
   bobberPrefab: {fileID: 7874958586603808974, guid: 3e91a6d26b3a8654eaef1495a56b878e,
     type: 3}
   followBobber: {fileID: 1370186103}
+--- !u!114 &1958222606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958222593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 7f694377c033896458c689494b977227,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6ab8ed75-c581-4758-9351-bff019cbe9dc
+    m_ActionName: Boat Control/Move
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cc845c2b-c88a-4e4e-9616-afc4d0466328
+    m_ActionName: Boat Control/Move Forward
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1958222603}
+        m_TargetAssemblyTypeName: FishingManager, Assembly-CSharp
+        m_MethodName: Cast
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 09227031-9740-45b3-af6f-80c4430fdb7f
+    m_ActionName: Boat Control/Cast
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1958222603}
+        m_TargetAssemblyTypeName: FishingManager, Assembly-CSharp
+        m_MethodName: ResetFishing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 3eb1b837-3d3a-48b4-a6f1-e723dbc1d801
+    m_ActionName: Boat Control/Fish
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Boat Control
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &1981041119
 GameObject:
   m_ObjectHideFlags: 0
