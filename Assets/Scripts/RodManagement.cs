@@ -1,3 +1,5 @@
+// This script uses code from ChatGPT.
+
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 

@@ -1,3 +1,6 @@
+// This script uses code from ChatGPT.
+
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,3 +1,5 @@
+// This script uses code from ChatGPT.
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +13,7 @@ public class Billboard : MonoBehaviour
     }
     void LateUpdate()
     {
-        // Make the canvas’s forward vector point at the camera
+        // Make the canvasï¿½s forward vector point at the camera
         transform.LookAt(transform.position + cam.rotation * Vector3.forward,
                          cam.rotation * Vector3.up);
     }
