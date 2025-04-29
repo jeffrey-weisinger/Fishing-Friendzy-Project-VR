@@ -5,7 +5,7 @@ using UnityEngine;
 public class popUp : MonoBehaviour
 {
     public GameObject popupPanel;
-    public float displayDuration = 8f; // how many seconds to show
+    public float displayDuration = 25f; // how many seconds to show
     public float fadeDuration = 1f; // how long it takes to fade out
 
     private CanvasGroup canvasGroup;
