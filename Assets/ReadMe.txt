@@ -1,0 +1,1 @@
+Almost, if not all code is inspired by or uses snippets from ChatGPT or one of Perplexity's LLMs (R1, Claude Sonnet).
