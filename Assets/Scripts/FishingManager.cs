@@ -116,11 +116,14 @@
 //         fish1.SetActive(false);
 //     }
 // }
-using UnityEngine;
+using UnityEngine; 
 using System.Collections;
+using System.Collections.Generic;
 
 public class FishingManager : MonoBehaviour
 {
+    public List<GameObject> fishes;
+
     [Header("Bobber Setup")]
     public Transform castPoint;
     public GameObject bobberPrefab;
@@ -175,7 +178,7 @@ public class FishingManager : MonoBehaviour
         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
 
-        resetCoroutine = StartCoroutine(AutoResetRoutine());
+        resetCoroutine = StartCoroutine(ResetFishingAfterDelay());
     }
 
     public void ResetFishing(bool fromCast = false)
@@ -191,11 +194,21 @@ public class FishingManager : MonoBehaviour
         if (followBobber != null) followBobber.SetActive(true);
         
         // Only show fish when called from Cast
-        if (fromCast && fish1 != null)
+        //if (fromCast && fish1 != null)
+        if (fromCast)
         {
-            fish1.SetActive(true);
+            //fish1.SetActive(true);
             Debug.Log("Fish1 made visible by Cast");
+            fishes[CatchFish()].SetActive(true);
+
         }
+    }
+
+    public int CatchFish()
+    {
+        int fish_index = Random.Range(0, fishes.Count);
+        return fish_index;
+
     }
 }
 
