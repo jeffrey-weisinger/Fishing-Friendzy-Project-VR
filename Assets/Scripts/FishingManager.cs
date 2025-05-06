@@ -17,7 +17,7 @@ public class FishingManager : MonoBehaviour
 
     [Header("Bobber Setup")]
     public Transform castPoint;
-    public GameObject bobberPrefab;
+    public GameObject bobberPrefab; 
     public GameObject followBobber;
     
     [Header("Fish Setup")]
