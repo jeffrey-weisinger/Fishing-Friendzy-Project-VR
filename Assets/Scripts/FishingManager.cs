@@ -23,6 +23,11 @@ public class FishingManager : MonoBehaviour
     [Header("Fish Setup")]
     public GameObject fish1; // Will be found at runtime
 
+    [Header("Line Renderer Setup")]
+    public LineRenderer fishingLine; // Assign your Line Renderer component here in the Inspector
+    public Transform rodTip;         // Assign the actual tip of the fishing rod here
+
+
     private GameObject currentBobber;
     private bool isFishing = false;
     private Coroutine resetCoroutine;
@@ -45,6 +50,37 @@ public class FishingManager : MonoBehaviour
         else
         {
             Debug.LogError("Fish1 not found! Make sure it's named exactly 'fish1'");
+        }
+
+        // Ensure the Line Renderer is assigned
+        if (fishingLine == null)
+        {
+            Debug.LogError("Fishing Line Renderer not assigned in the Inspector!");
+            // Optionally, try to get it if it's on the same GameObject
+            // fishingLine = GetComponent<LineRenderer>();
+            // if (fishingLine == null) enabled = false; // Disable script if still not found
+        }
+        else
+        {
+            fishingLine.enabled = false; // Start with  line hidden
+            fishingLine.positionCount = 2; // Rod tip and bobber
+        }
+
+        if (rodTip == null)
+        {
+            Debug.LogError("Rod Tip Transform not assigned in the Inspector!");
+            // You might want to disable the script or provide a default if critical
+            // enabled = false;
+        }
+    }
+
+    void Update()
+    {
+        // If fishing and the bobber exists, update the line's end point
+        if (isFishing && currentBobber != null && fishingLine != null && fishingLine.enabled)
+        {
+            fishingLine.SetPosition(0, rodTip.position); // Start of the line is always the rod tip
+            fishingLine.SetPosition(1, currentBobber.transform.position); // End of the line follows the bobber
         }
     }
 
@@ -69,6 +105,18 @@ public class FishingManager : MonoBehaviour
         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
 
+        // Enable and set up the fishing line
+        if (fishingLine != null && rodTip != null)
+        {
+            fishingLine.enabled = true;
+            fishingLine.SetPosition(0, rodTip.position);
+            fishingLine.SetPosition(1, currentBobber.transform.position); // Initial position of the bobber
+        }
+        else
+        {
+            Debug.LogError("Cannot draw fishing line - LineRenderer or RodTip not set!");
+        }
+
         resetCoroutine = StartCoroutine(ResetFishingAfterDelay());
     }
 
@@ -83,6 +131,12 @@ public class FishingManager : MonoBehaviour
         isFishing = false;
         if (currentBobber != null) Destroy(currentBobber);
         if (followBobber != null) followBobber.SetActive(true);
+
+        // Disable the fishing line
+        if (fishingLine != null)
+        {
+            fishingLine.enabled = false;
+        }
         
         // Only show fish when called from Cast
         //if (fromCast && fish1 != null)
@@ -96,6 +150,14 @@ public class FishingManager : MonoBehaviour
             GameObject currentFish = Instantiate(fishes[fishIndex], inventorySlots[fishCounter]);
             //add random fish to slot.
             fishCounter += 1;
+            if (fishes != null && fishes.Count > 0)
+            {
+                fishes[CatchFish()].SetActive(true);
+            }
+            else
+            {
+                Debug.LogWarning("Fishes list is not set up or empty.");
+            }
 
             // fishes[CatchFish()].SetActive(true);
         }
