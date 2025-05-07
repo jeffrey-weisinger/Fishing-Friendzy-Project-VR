@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 
+
+
 public class FishingManager : MonoBehaviour
 {
     // Fish prefabs for inventory
@@ -16,6 +18,10 @@ public class FishingManager : MonoBehaviour
     public int fishCounter = 0;
 
 
+    [Header("Effects")]
+    public GameObject waterSplashPrefab;
+
+
     [Header("Bobber Setup")]
     public Transform castPoint;
     public GameObject bobberPrefab;
@@ -25,9 +31,13 @@ public class FishingManager : MonoBehaviour
     public GameObject fish1;
 
 
+
+
     [Header("Line Renderer Setup")]
     public LineRenderer fishingLine;
     public Transform rodTip;
+
+
 
 
     // Private variables
@@ -36,6 +46,8 @@ public class FishingManager : MonoBehaviour
     private Coroutine fishingSequenceCoroutine;
     private Coroutine bobbingCoroutine;
     private Coroutine lineUpdateCoroutine;
+
+
 
 
     void Awake()
@@ -58,6 +70,8 @@ public class FishingManager : MonoBehaviour
         }
 
 
+
+
         // Check fishing line setup
         if (fishingLine == null)
         {
@@ -70,11 +84,15 @@ public class FishingManager : MonoBehaviour
         }
 
 
+
+
         if (rodTip == null)
         {
             Debug.LogError("Rod Tip Transform not assigned in the Inspector!");
         }
     }
+
+
 
 
     // Start fishing when cast is called
@@ -84,14 +102,20 @@ public class FishingManager : MonoBehaviour
         isFishing = true;
 
 
+
+
         if (followBobber != null)
             followBobber.SetActive(false);
+
+
 
 
         // Create bobber and apply initial force
         currentBobber = Instantiate(bobberPrefab, castPoint.position, Quaternion.identity);
         Rigidbody rb = currentBobber.GetComponent<Rigidbody>();
         rb.AddForce(castPoint.forward * 6f + Vector3.up * 2f, ForceMode.Impulse);
+
+
 
 
         // Set up and enable the fishing line
@@ -107,9 +131,13 @@ public class FishingManager : MonoBehaviour
         }
 
 
+
+
         // Start the complete fishing sequence
         fishingSequenceCoroutine = StartCoroutine(CompleteFishingSequence());
     }
+
+
 
 
     // Continuously update the fishing line to prevent shakiness
@@ -126,11 +154,15 @@ private IEnumerator UpdateFishingLine()
     private IEnumerator CompleteFishingSequence()
     {
         // Wait for bobber to settle
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2.3f);
        
         if (currentBobber != null)
         {
             // Store base position after settling
+            GameObject splashEffect = Instantiate(waterSplashPrefab, currentBobber.transform.position, Quaternion.identity);
+            splashEffect.GetComponent<ParticleSystem>().Play();
+            Destroy(splashEffect, 2f); // Destroy after effect finishes
+
             Vector3 basePosition = currentBobber.transform.position;
            
             // Start bobbing motion
@@ -232,6 +264,8 @@ private IEnumerator UpdateFishingLine()
             StopCoroutine(lineUpdateCoroutine);
 
 
+
+
         isFishing = false;
        
         if (currentBobber != null)
@@ -239,6 +273,8 @@ private IEnumerator UpdateFishingLine()
            
         if (followBobber != null)
             followBobber.SetActive(true);
+
+
 
 
         if (fishingLine != null)
@@ -251,6 +287,9 @@ private IEnumerator UpdateFishingLine()
         return Random.Range(0, fishes.Count-1);
     }
 }
+
+
+
 
 
 
