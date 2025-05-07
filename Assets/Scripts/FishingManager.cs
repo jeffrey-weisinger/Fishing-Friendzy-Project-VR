@@ -214,9 +214,23 @@ private IEnumerator UpdateFishingLine()
             //     celebrationEffect.GetComponent<ParticleSystem>().Play();
             //     Destroy(celebrationEffect, 3f); // Adjust time as needed
             // }
-        if (fishCounter >= 1)
+        // Reset fishing state
+        ResetFishing();
+
+        if (fishCounter >= 14)
         {
+            yield return new WaitForSeconds(1.5f);
+
             ShowVictoryPopup();
+            for (int i = 0; i < inventorySlots.Count; i++)
+            {
+                Transform slot = inventorySlots[i];
+                // Destroy any child (the caught-fish prefab) under this slot
+                for (int c = slot.childCount - 1; c >= 0; c--)
+                {
+                    Destroy(slot.GetChild(c).gameObject);
+                }
+            }
             // 1) Decide how far and in what direction from the camera you want it
             var cam = Camera.main; 
             float distanceInFront = 6f;       // adjust as needed
@@ -240,10 +254,12 @@ private IEnumerator UpdateFishingLine()
             Destroy(effect, 3f);
         }
 
+        if (fishingSequenceCoroutine != null)
+            StopCoroutine(fishingSequenceCoroutine);
+
         }
        
-        // Reset fishing state
-        ResetFishing();
+
     }
    
     // Smooth bobbing motion for the bobber
@@ -290,8 +306,6 @@ private IEnumerator UpdateFishingLine()
     // Clean up everything
     public void ResetFishing()
     {
-        if (fishingSequenceCoroutine != null)
-            StopCoroutine(fishingSequenceCoroutine);
            
         if (bobbingCoroutine != null)
             StopCoroutine(bobbingCoroutine);
