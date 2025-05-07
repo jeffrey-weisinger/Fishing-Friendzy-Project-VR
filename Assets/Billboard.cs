@@ -14,7 +14,7 @@ public class Billboard : MonoBehaviour
     void LateUpdate()
     {
         // Make the canvas�s forward vector point at the camera
-        transform.LookAt(transform.position + cam.rotation * Vector3.forward,
-                         cam.rotation * Vector3.up);
+        // transform.LookAt(transform.position + cam.rotation * Vector3.forward,
+        //                  cam.rotation * Vector3.up);
     }
 }

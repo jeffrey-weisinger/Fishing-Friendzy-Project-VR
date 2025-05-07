@@ -20,6 +20,7 @@ public class FishingManager : MonoBehaviour
 
     [Header("Effects")]
     public GameObject waterSplashPrefab;
+    public GameObject celebrationEffectPrefab; // Add this line
 
 
     [Header("Bobber Setup")]
@@ -204,6 +205,38 @@ private IEnumerator UpdateFishingLine()
                 caughtFish.transform.localPosition = Vector3.zero;
                 fishCounter++;
             }
+            // if (fishCounter >= 1) // Change to your max fish count
+            // {
+            //     // Play celebration effect
+            //     GameObject celebrationEffect = Instantiate(celebrationEffectPrefab, currentBobber.transform.position, Quaternion.identity);
+            //     celebrationEffect.GetComponent<ParticleSystem>().Play();
+            //     Destroy(celebrationEffect, 3f); // Adjust time as needed
+            // }
+        if (fishCounter >= 1)
+        {
+            // 1) Decide how far and in what direction from the camera you want it
+            var cam = Camera.main; 
+            float distanceInFront = 6f;       // adjust as needed
+            float heightAbove     = 10f;       // adjust as needed
+
+            // 2) Compute the world‐space spawn point
+            Vector3 spawnPos = cam.transform.position
+                            + cam.transform.forward * distanceInFront
+                            + Vector3.up           * heightAbove;
+
+            // 3) Instantiate and play
+            var effect = Instantiate(
+                celebrationEffectPrefab,
+                spawnPos,
+                Quaternion.LookRotation(cam.transform.forward)
+            );
+            var ps = effect.GetComponent<ParticleSystem>();
+            if (ps != null) ps.Play();
+
+            // 4) Clean up
+            Destroy(effect, 3f);
+        }
+
         }
        
         // Reset fishing state
