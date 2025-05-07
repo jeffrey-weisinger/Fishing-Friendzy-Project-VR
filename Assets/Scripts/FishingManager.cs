@@ -17,12 +17,13 @@ public class FishingManager : MonoBehaviour
     // Track how many fish we've caught
     public int fishCounter = 0;
 
-
+    [Header("Popup")]
+    public GameObject victoryPopup; 
     [Header("Effects")]
     public GameObject waterSplashPrefab;
     public GameObject celebrationEffectPrefab; // Add this line
-
-
+    public GameObject victoryPopupPrefab;      // assign your new prefab
+    public GameObject boat;  
     [Header("Bobber Setup")]
     public Transform castPoint;
     public GameObject bobberPrefab;
@@ -30,7 +31,6 @@ public class FishingManager : MonoBehaviour
    
     [Header("Fish Setup")]
     public GameObject fish1;
-
 
 
 
@@ -53,6 +53,8 @@ public class FishingManager : MonoBehaviour
 
     void Awake()
     {
+        victoryPopup.SetActive(false); // keep it hidden at first
+
         // Find fish1 if not assigned in Inspector
         if (fish1 == null)
         {
@@ -214,6 +216,7 @@ private IEnumerator UpdateFishingLine()
             // }
         if (fishCounter >= 1)
         {
+            ShowVictoryPopup();
             // 1) Decide how far and in what direction from the camera you want it
             var cam = Camera.main; 
             float distanceInFront = 6f;       // adjust as needed
@@ -318,6 +321,30 @@ private IEnumerator UpdateFishingLine()
     public int CatchFish()
     {
         return Random.Range(0, fishes.Count-1);
+    }
+
+    // void ShowVictoryPopup()
+    // {
+    //     // compute spawn position just above the boat
+    //     Vector3 spawnPos = boat.transform.position + Vector3.up * 2f;
+        
+    //     // instantiate and orient so it faces the camera
+    //     var popup = Instantiate(victoryPopupPrefab, spawnPos, Quaternion.identity);
+    //     popup.transform.LookAt(Camera.main.transform);
+    //     popup.transform.Rotate(0,180,0); // because LookAt faces its back toward camera
+        
+    //     Destroy(popup, 4f);
+    // }
+
+    void ShowVictoryPopup()
+    {
+        victoryPopup.SetActive(true);
+        Invoke(nameof(HideVictoryPopup), 4f);  // hide after 4 seconds
+    }
+
+    void HideVictoryPopup()
+    {
+        victoryPopup.SetActive(false);
     }
 }
 
